@@ -1,0 +1,7 @@
+---
+// Structured data for search engines. JSON in a data block, which the Content-Security-Policy
+// doesn't treat as a script; "<" is escaped so the text can never close the element.
+interface Props { data: object | object[] }
+const json = JSON.stringify(Astro.props.data).replace(/</g, '\\u003c');
+---
+<script is:inline type="application/ld+json" set:html={json} />

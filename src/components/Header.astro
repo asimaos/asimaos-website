@@ -1,0 +1,70 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../../site.config.mjs';
+
+const nav = [
+  ['Features', '/features/'],
+  ['Apps', '/apps/'],
+  ['Guides', '/guides/'],
+  ['News', '/news/'],
+  ['Community', '/community/'],
+  ['About', '/about/'],
+];
+const path = Astro.url.pathname;
+const current = (href: string) => (path === href || path.startsWith(href) ? 'page' : undefined);
+---
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/" aria-label={`${site.name} home`}>
+      <img src="/mark.svg" alt="" width="34" height="34" />
+      <span>{site.name}</span>
+    </a>
+    <nav class="nav-main" aria-label="Main">
+      <ul>
+        {nav.map(([label, href]) => <li><a href={href} aria-current={current(href)}>{label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="icon-btn" href="/search/" aria-label="Search the site"><Icon name="search" /></a>
+      <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch between light and dark">
+        <Icon name="moon" class="moon" /><Icon name="sun" class="sun" />
+      </button>
+      <a class="btn btn-primary header-download" href="/download/">Download</a>
+      <details class="nav-mobile">
+        <summary class="icon-btn" aria-label="Menu"><Icon name="menu" class="open" /><Icon name="close" class="close" /></summary>
+        <div class="nav-mobile-panel">
+          <nav aria-label="Main">
+            <ul>
+              {nav.map(([label, href]) => <li><a href={href} aria-current={current(href)}>{label}</a></li>)}
+            </ul>
+          </nav>
+          <a class="btn btn-primary" href="/download/"><Icon name="download" />Download</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  const root = document.documentElement;
+  const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const label = () => {
+    const dark = root.dataset.theme === 'dark';
+    toggle?.setAttribute('aria-label', dark ? 'Switch to the light theme' : 'Switch to the dark theme');
+  };
+  label();
+  toggle?.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch { /* private window: the choice lasts for this page */ }
+    label();
+  });
+  // Close the phone menu after choosing a link or pressing Escape.
+  const menu = document.querySelector<HTMLDetailsElement>('.nav-mobile');
+  menu?.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menu.open) { menu.open = false; menu.querySelector('summary')?.focus(); }
+  });
+  document.addEventListener('click', (event) => {
+    if (menu?.open && !menu.contains(event.target as Node)) menu.open = false;
+  });
+</script>

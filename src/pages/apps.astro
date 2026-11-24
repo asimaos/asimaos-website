@@ -1,0 +1,124 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Screenshot from '../components/Screenshot.astro';
+import { site, names, links } from '../../site.config.mjs';
+
+const apps = [
+  {
+    id: 'updater', icon: '/apps/updater.svg', name: names.updater,
+    job: 'Updates and the versions in the start menu.',
+    points: ['Checks an update file’s signature before anything is written', 'Installs in the background; restart when you like', 'Make the backup the current version, or start it just once', 'Never goes online by itself: you choose where updates come from'],
+    shots: [['updater-updates-ready', 'An update file checked and ready'], ['updater-versions', 'The current and backup versions']],
+  },
+  {
+    id: 'maintenance', icon: '/apps/maintenance.svg', name: names.maintenance,
+    job: 'Keeps the system healthy and your data safe.',
+    points: ['Health: failed starts, disk checks, SSD wear, and a problem report to save', 'Secure Boot, the recovery key, and TPM unlock, automatic or with a PIN', 'Snapshots and encrypted backups, restored into a folder of their own', '“Reset settings” and a factory reset, explained before anything happens'],
+    shots: [['maintenance-overview', 'The overview'], ['maintenance-reset', 'Reset settings and the factory reset']],
+  },
+  {
+    id: 'manager', icon: '/apps/manager.svg', name: names.manager,
+    job: 'This computer’s settings, in one place.',
+    points: ['Power modes and battery care', 'Fingerprint and face sign-in, with a blink check for webcams', 'Display, keyboard light and the hardware it found', `${names.shield}: the firewall, and a VPN kill-switch`],
+    shots: [['manager-home', 'Home, on a handheld'], ['manager-power', 'Power and battery']],
+  },
+  {
+    id: 'gaming', icon: '/apps/gaming.svg', name: names.gaming,
+    job: 'Everything for games, without hunting through settings.',
+    points: ['Power mode and the CPU scheduler for games', 'Controllers: test them, set the rumble, use one as a mouse', 'A handheld’s power limit, refresh rate, frame limit and fan', 'RGB lighting, and a full-screen game mode with Steam'],
+    shots: [['gaming-gaming', 'Gaming'], ['gaming-controllers', 'Controllers']],
+  },
+  {
+    id: 'dev', icon: '/apps/dev.svg', name: names.dev,
+    job: 'Containers, virtual machines, Nix and Android apps.',
+    points: ['Distrobox and Podman containers, created and opened from one list', 'Virtual machines, even with a graphics card of their own', 'Nix programs, installed for you without touching the system', 'Android apps through Waydroid'],
+    shots: [['dev-containers', 'Containers'], ['dev-nix', 'Nix programs']],
+  },
+  {
+    id: 'rescue', icon: '/mark.svg', name: names.rescue,
+    job: 'A repair system in the start menu, entirely in memory.',
+    points: ['Unlock the disk with the passphrase or the recovery key', 'Check and repair the disk, start the previous version', 'Restore your files, or reinstall while keeping them', 'Factory reset, or erase the whole disk'],
+    shots: [['rescue-home', 'The repair tools'], ['rescue-unlock', 'Unlocking the disk']],
+  },
+  {
+    id: 'installer', icon: '/mark.svg', name: `The ${site.name} installer`,
+    job: 'Puts ' + site.name + ' on a computer in a few steps.',
+    points: ['Every language and keyboard layout, and a city search for your time zone', 'Encryption on by default, with a recovery key at the end', 'Try the live system first, install when you’re ready'],
+    shots: [['installer-welcome', 'Welcome'], ['installer-encryption-filled', 'Encryption']],
+  },
+  {
+    id: 'hub', icon: '/apps/hub.svg', name: names.hub,
+    job: 'The one app that goes online, and it’s optional.',
+    points: ['News, and a check of what ' + site.name + ' will do on your PC', 'Downloads the system and writes the USB stick: on Linux now, on Windows later', 'On ' + site.name + ', downloads updates and hands them to ' + names.updater, 'Never part of the system: install it only if you want it'],
+    shots: [['hub-get', 'Getting ' + site.name], ['hub-updates', 'Updates']],
+  },
+];
+---
+<Base title="Apps" description={`The ${site.name} apps: ${names.updater}, ${names.maintenance}, ${names.manager}, ${names.gaming}, ${names.dev}, ${names.rescue}, the installer and ${names.hub}.`}>
+  <section class="container page-head">
+    <p class="eyebrow">Apps</p>
+    <h1>One job per app, done well</h1>
+    <p class="lead">Every {site.name} app is a Qt 6 app with its own small system service, so it asks for your password only when it changes something, and one app can never break another.</p>
+    <nav class="app-index" aria-label="The apps">
+      {apps.map((a) => (
+        <a class="app-chip" href={`#${a.id}`}><img src={a.icon} alt="" width="28" height="28" />{a.name.replace(/^The /, '')}</a>
+      ))}
+    </nav>
+  </section>
+
+  {apps.map((a, i) => (
+    <section id={a.id} class:list={['section', { 'section-alt': i % 2 === 0 }]}>
+      <div class="container">
+        <div class="app-head">
+          <img src={a.icon} alt="" width="64" height="64" loading="lazy" />
+          <div>
+            <h2>{a.name}</h2>
+            <p class="lead">{a.job}</p>
+          </div>
+        </div>
+        <ul class="checks two-col">{a.points.map((p) => <li>{p}</li>)}</ul>
+        <div class="grid grid-2 shots">
+          {a.shots.map(([shot, caption]) => (
+            <Screenshot name={shot} alt={`${a.name}: ${caption}`} caption={caption}
+              sizes="(min-width: 1200px) 590px, (min-width: 640px) 48vw, 100vw" />
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Approving admin tasks</p>
+        <h2>{names.dialog.replace(/^the /, 'The ')}</h2>
+        <p class="lead">When an app needs to change the system, one clear dialog asks. Type your password, or touch the fingerprint reader, or look at the camera if you set up face sign-in.</p>
+        <p><a href={links.code}>Every app’s code is open <Icon name="arrow" size={18} class="inline-icon" /></a></p>
+      </div>
+      <Screenshot name="polkit-agent-dialog-fingerprint" alt="The password dialog with buttons for fingerprint and face" sizes="480px" class="dialog-shot" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .app-index { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .app-chip {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 14px 8px 8px;
+    border: 1px solid var(--border); border-radius: 999px;
+    background: var(--surface); color: var(--text);
+    font-weight: 600; font-size: 0.9375rem; text-decoration: none;
+  }
+  .app-chip:hover { border-color: var(--border-strong); background: var(--surface-hover); }
+  .app-chip img { width: 28px; height: 28px; }
+  .app-head { display: flex; gap: 20px; align-items: center; margin-bottom: 24px; }
+  .app-head img { width: 64px; height: 64px; flex: none; }
+  .app-head h2 { margin-bottom: 4px; }
+  .app-head .lead { margin: 0; }
+  .two-col { margin-bottom: 36px; }
+  @media (min-width: 820px) { .two-col { grid-template-columns: 1fr 1fr; column-gap: 32px; } }
+  .shots { gap: 24px; }
+  :global(.dialog-shot) { max-width: 480px; justify-self: center; }
+  :global(.inline-icon) { display: inline-block; vertical-align: -3px; }
+</style>

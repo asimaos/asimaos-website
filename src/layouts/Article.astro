@@ -1,0 +1,84 @@
+---
+// Guides and news: the text, a list of headings on wide screens, and a way back.
+import Base from './Base.astro';
+import Icon from '../components/Icon.astro';
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow: string;
+  back: [string, string];
+  headings?: MarkdownHeading[];
+  published?: Date;
+  jsonld?: object[];
+  edit?: string;
+}
+const { title, description, eyebrow, back, headings = [], published, jsonld = [], edit } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2);
+---
+<Base title={title} description={description} type={published ? 'article' : 'website'} published={published} jsonld={jsonld}>
+  <div class="container article">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href={back[1]}><Icon name="back" size={16} class="inline-icon" />{back[0]}</a>
+    </nav>
+    <div class="article-grid">
+      <article class="prose">
+        <p class="eyebrow">{eyebrow}</p>
+        <h1>{title}</h1>
+        <p class="lead">{description}</p>
+        <slot />
+        {edit && <p class="edit muted"><a href={edit}>See this page&rsquo;s source</a></p>}
+      </article>
+      {toc.length > 1 && (
+        <aside class="toc" aria-label="On this page">
+          <p class="toc-title">On this page</p>
+          <ul>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>
+        </aside>
+      )}
+    </div>
+  </div>
+</Base>
+
+<script>
+  // A "Copy" button on every code block.
+  for (const pre of document.querySelectorAll<HTMLPreElement>('.prose pre')) {
+    const wrap = document.createElement('div');
+    wrap.className = 'code-wrap';
+    pre.replaceWith(wrap);
+    wrap.append(pre);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'copy-btn';
+    button.textContent = 'Copy';
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pre.innerText.trimEnd());
+        button.textContent = 'Copied';
+      } catch {
+        button.textContent = 'Select and copy';
+      }
+      setTimeout(() => (button.textContent = 'Copy'), 2000);
+    });
+    wrap.append(button);
+  }
+</script>
+
+<style>
+  .article { padding-block: 32px 96px; }
+  .crumbs { margin-bottom: 32px; font-size: 0.9375rem; }
+  .crumbs a { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--text); }
+  .article-grid { display: grid; gap: 48px; }
+  @media (min-width: 1100px) { .article-grid { grid-template-columns: minmax(0, var(--prose)) 240px; justify-content: space-between; } }
+  .article h1 { font-size: clamp(2rem, 1.5rem + 2vw, 2.875rem); }
+  .article .lead { margin-bottom: 2em; }
+  .toc { position: sticky; top: 96px; align-self: start; display: none; font-size: 0.9375rem; }
+  @media (min-width: 1100px) { .toc { display: block; } }
+  .toc-title { margin-bottom: 8px; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .toc ul { margin: 0; padding: 0 0 0 14px; list-style: none; border-left: 2px solid var(--border); display: grid; gap: 8px; }
+  .toc a { color: var(--text-muted); text-decoration: none; }
+  .toc a:hover { color: var(--accent-text); }
+  .edit { margin-top: 3em; font-size: 0.9375rem; }
+  :global(.inline-icon) { display: inline-block; vertical-align: -3px; }
+</style>

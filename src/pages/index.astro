@@ -1,0 +1,256 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Screenshot from '../components/Screenshot.astro';
+import { site, names, links, release } from '../../site.config.mjs';
+
+const pillars = [
+  {
+    icon: 'layers',
+    title: 'It can’t break by accident',
+    text: `The system is one read-only image, checked block by block while it runs. Updates never change it in place: they arrive as a complete new version next to it.`,
+  },
+  {
+    icon: 'back',
+    title: 'Back on its feet by itself',
+    text: `If a new version fails to start three times in a row, your PC starts the one before it and makes it the current version again. You don’t have to do anything.`,
+  },
+  {
+    icon: 'shield',
+    title: 'Safe from the first start',
+    text: `Secure Boot, an encrypted disk, and a TPM chip that opens it for you, automatically or with a short PIN. A recovery key is made when you install.`,
+  },
+];
+
+const features = [
+  { icon: 'update', title: 'Updates are one file', text: 'The whole system in one signed file, checked before anything is written. It survives a power cut, and any version jumps straight to the newest.' },
+  { icon: 'back', title: 'Two versions to choose from', text: 'The start menu keeps the current version and the one before it. Going back takes one click and never touches your files.' },
+  { icon: 'rescue', title: `${names.rescue}`, text: 'A repair system in the start menu that runs entirely in memory: unlock the disk, restore files, reinstall, all without a USB stick.' },
+  { icon: 'data', title: 'Your files stay yours', text: 'Snapshots of your files and settings, encrypted backups that test their own restore, and a guard that asks before any tool wipes the disk.' },
+  { icon: 'box', title: 'Every kind of app', text: 'Flathub in Discover, Snap, AppImage, Android apps, Nix, and any Linux distribution’s packages in a container.' },
+  { icon: 'gamepad', title: 'Ready for games', text: 'Steam from Flathub, a gaming CPU scheduler, NTSYNC, controllers and handhelds, and a full-screen game mode.' },
+  { icon: 'code', title: 'Ready for developers', text: 'Podman and Distrobox, virtual machines with a graphics card of their own, Nix, and the everyday tools already there.' },
+  { icon: 'monitor', title: 'Plain KDE Plasma', text: `KDE Plasma ${release.base.plasma} on Wayland with its standard look and apps. Nothing re-skinned, nothing to unlearn.` },
+];
+
+const apps = [
+  { id: 'maintenance', icon: '/apps/maintenance.svg', name: names.maintenance, shot: 'maintenance-overview',
+    text: 'Health at a glance, Secure Boot and the disk’s keys, snapshots and backups, and a reset that brings back the factory settings.' },
+  { id: 'manager', icon: '/apps/manager.svg', name: names.manager, shot: 'manager-home',
+    text: 'Your device in one place: power and battery care, display, fingerprint and face sign-in, and the firewall.' },
+  { id: 'gaming', icon: '/apps/gaming.svg', name: names.gaming, shot: 'gaming-gaming',
+    text: 'Power mode and CPU scheduler for games, the overlay, controllers, a handheld’s own controls and RGB lighting.' },
+  { id: 'dev', icon: '/apps/dev.svg', name: names.dev, shot: 'dev-containers',
+    text: 'Containers, virtual machines, Nix programs and Android apps, set up from one window.' },
+];
+
+const facts = [
+  ['Arch Linux packages', `From a fixed snapshot (${release.base.snapshot}), tested together`],
+  [`systemd ${release.base.systemd} · Linux ${release.base.kernel}`, 'Arch’s standard kernel, never a custom one'],
+  [`KDE Plasma ${release.base.plasma}`, `Wayland, with KDE Gear ${release.base.gear} apps`],
+  ['Read-only system', 'EROFS image verified by dm-verity'],
+  ['Encrypted Btrfs', 'LUKS2, snapshots, room to grow'],
+  ['Signed start-up', 'Secure Boot, signed boot images, TPM 2.0'],
+  ['Qt 6 apps, Rust services', 'One job per app, one service per app'],
+  ['No package manager to break', 'Apps come from Flatpak, Snap, Nix and containers'],
+];
+
+const jsonld = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, alternateName: site.longName, url: site.url },
+  {
+    '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: site.longName,
+    applicationCategory: 'Operating system', operatingSystem: 'x86_64 PCs with UEFI',
+    description: site.description, url: site.url, image: new URL('/og.png', site.url).href,
+    license: 'https://spdx.org/licenses/GPL-3.0-or-later.html',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+];
+---
+<Base title={`${site.longName}: install once, it keeps working`} fullTitle jsonld={jsonld}>
+  <section class="hero-band hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        {release.public
+          ? <a class="pill pill-glass" href="/download/">Version {release.version} is out <Icon name="arrow" size={16} /></a>
+          : <span class="pill pill-glass pill-dot">In testing: the first public release is on its way</span>}
+        <h1>Install once.<br /><span class="soft">It keeps working.</span></h1>
+        <p class="lead">
+          {site.longName} is a free operating system for everyday use, gaming and development. Every update is a
+          complete, checked system, and if a new version doesn&rsquo;t start, your PC goes back to the one before it by itself.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-light" href="/features/">See what you get <Icon name="arrow" /></a>
+          <a class="btn btn-outline-light" href="/download/"><Icon name="download" />Download</a>
+        </div>
+        <p class="hero-meta">Free and open source &middot; Built from Arch Linux &middot; KDE Plasma {release.base.plasma}</p>
+      </div>
+      <div class="hero-shot">
+        <Screenshot name="updater-versions" eager
+          alt={`${names.updater} showing the version running now and the backup version, with a button to make the backup current`}
+          sizes="(min-width: 1200px) 680px, (min-width: 960px) 55vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">Why {site.name}</p>
+        <h2>An operating system you don&rsquo;t have to look after</h2>
+        <p class="lead">Most systems change piece by piece, and one bad piece can stop the whole computer. {site.name} changes all at once, checks everything first, and always keeps a way back.</p>
+      </div>
+      <div class="grid grid-3">
+        {pillars.map((p) => (
+          <div class="card pillar">
+            <span class="icon-tile"><Icon name={p.icon} /></span>
+            <h3>{p.title}</h3>
+            <p class="muted">{p.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">What you get</p>
+        <h2>Everything a PC needs, nothing it doesn&rsquo;t</h2>
+        <p class="lead">Standard parts, put together carefully, with apps that each do one job well.</p>
+      </div>
+      <div class="grid grid-4">
+        {features.map((f) => (
+          <div class="feature">
+            <span class="icon-tile"><Icon name={f.icon} /></span>
+            <h3>{f.title}</h3>
+            <p class="muted">{f.text}</p>
+          </div>
+        ))}
+      </div>
+      <p class="more"><a class="btn btn-secondary" href="/features/">Every feature in detail <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Updates</p>
+        <h2>Updating is safe, so you can just do it</h2>
+        <ol class="steps">
+          <li>
+            <h3>Get the update file</h3>
+            <p class="muted">{names.hub} tells you when a new version is out and downloads it. You can also bring the file on a USB stick.</p>
+          </li>
+          <li>
+            <h3>{names.updater} checks it</h3>
+            <p class="muted">The signature, that it&rsquo;s newer, that there is room. Then it installs in the background while you keep working.</p>
+          </li>
+          <li>
+            <h3>Restart</h3>
+            <p class="muted">The new version starts, and the old one stays in the start menu as the backup. Your files, apps and settings are untouched.</p>
+          </li>
+        </ol>
+        <a href="/guides/updates/">How updates work <Icon name="arrow" size={18} class="inline-icon" /></a>
+      </div>
+      <Screenshot name="updater-updates-ready" alt={`${names.updater} with an update file checked and ready to install`} />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">The apps</p>
+        <h2>Simple apps for the things that matter</h2>
+        <p class="lead">Each one does one job, in plain words, and asks for your password only when it changes something.</p>
+      </div>
+      <div class="app-rows">
+        {apps.map((app, i) => (
+          <div class:list={['split', 'app-row', { reverse: i % 2 === 1 }]}>
+            <div>
+              <img class="app-icon" src={app.icon} alt="" width="56" height="56" loading="lazy" />
+              <h3 class="app-name">{app.name}</h3>
+              <p class="lead">{app.text}</p>
+              <a href={`/apps/#${app.id}`}>More about {app.name} <Icon name="arrow" size={18} class="inline-icon" /></a>
+            </div>
+            <Screenshot name={app.shot} alt={`${app.name}`} />
+          </div>
+        ))}
+      </div>
+      <p class="more center"><a class="btn btn-secondary" href="/apps/">See all the apps <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Under the hood</p>
+        <h2>Standard parts, put together carefully</h2>
+        <p class="lead">Nothing exotic: well-known open-source pieces, pinned, tested together and signed. <a href={links.architecture}>How it works</a> is written down in full.</p>
+      </div>
+      <dl class="facts">
+        {facts.map(([term, detail]) => (
+          <div class="fact"><dt>{term}</dt><dd>{detail}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="hero-band cta">
+    <div class="container cta-inner">
+      <h2>Ready when you are</h2>
+      <p class="lead">Read how to install it, follow the news, or look at the code. It&rsquo;s all open.</p>
+      <div class="btn-row">
+        <a class="btn btn-light" href="/download/"><Icon name="download" />Download</a>
+        <a class="btn btn-outline-light" href="/guides/install/">How to install</a>
+        <a class="btn btn-outline-light" href={links.code}><Icon name="github" />Source code</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(48px, 3rem + 4vw, 104px) clamp(56px, 3rem + 4vw, 112px); }
+  .hero-grid { display: grid; gap: clamp(36px, 2rem + 3vw, 64px); align-items: center; }
+  @media (min-width: 960px) { .hero-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }
+  .hero h1 { margin: 20px 0 20px; color: #fff; font-size: clamp(2.5rem, 1.6rem + 3vw, 3.5rem); }
+  .hero h1 .soft { color: rgb(255 255 255 / 0.78); }
+  .hero .lead { max-width: 34rem; margin-bottom: 28px; }
+  .hero-meta { margin: 24px 0 0; color: rgb(255 255 255 / 0.78); font-size: 0.9375rem; }
+  .hero-shot :global(.shot) { border-color: rgb(255 255 255 / 0.22); box-shadow: 0 40px 80px -24px rgb(8 20 60 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.06); }
+  @media (min-width: 960px) { .hero-shot { margin-right: calc(-1 * clamp(0px, 4vw, 64px)); } }
+
+  .pillar .icon-tile { width: 56px; height: 56px; border-radius: 14px; }
+  .feature h3 { font-size: 1.125rem; }
+  .feature p { font-size: 0.98rem; margin: 0; }
+  .more { margin: 40px 0 0; }
+
+  .steps { margin: 28px 0 24px; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 20px; }
+  .steps li { position: relative; padding-left: 56px; counter-increment: step; }
+  .steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: -2px;
+    display: grid; place-items: center;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: #fff;
+    font-weight: 700;
+  }
+  .steps h3 { font-size: 1.125rem; margin-bottom: 4px; }
+  .steps p { margin: 0; }
+  :global(.inline-icon) { display: inline-block; vertical-align: -3px; }
+
+  .app-rows { display: grid; gap: clamp(56px, 3rem + 3vw, 104px); }
+  .app-icon { width: 56px; height: 56px; margin-bottom: 16px; }
+  .app-name { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); }
+
+  .facts { margin: 0; display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-l); overflow: hidden; }
+  .fact { padding: 22px 24px; background: var(--surface); }
+  .fact dt { font-weight: 700; margin-bottom: 4px; }
+  .fact dd { margin: 0; color: var(--text-muted); font-size: 0.96rem; }
+
+  .cta { padding-block: clamp(56px, 3rem + 3vw, 96px); text-align: center; }
+  .cta h2 { color: #fff; }
+  .cta .lead { max-width: 36rem; margin-inline: auto; margin-bottom: 28px; }
+  .cta .btn-row { justify-content: center; }
+</style>

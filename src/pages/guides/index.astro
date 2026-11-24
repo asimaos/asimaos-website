@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { site } from '../../../site.config.mjs';
+
+const guides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
+const icons: Record<string, string> = {
+  'check-a-download': 'check', install: 'download', 'approve-the-key': 'key', 'recovery-key': 'lock',
+  updates: 'update', rescue: 'rescue', 'test-updates': 'tool',
+};
+---
+<Base title="Guides" description={`Step-by-step guides for ${site.name}: checking a download, installing, the recovery key, updates and ${site.name}'s repair tools.`}>
+  <section class="container page-head">
+    <p class="eyebrow">Guides</p>
+    <h1>Help, step by step</h1>
+    <p class="lead">Short guides for the moments that matter: installing, keeping your disk&rsquo;s keys safe, updating and repairing.</p>
+    <p><a class="btn btn-secondary" href="/search/"><Icon name="search" />Search the guides</a></p>
+  </section>
+  <section class="container guide-list">
+    <div class="grid grid-2">
+      {guides.map((g) => (
+        <a class="card card-link guide" href={`/guides/${g.id}/`}>
+          <span class="icon-tile"><Icon name={icons[g.id] ?? 'book'} /></span>
+          <div>
+            <h2>{g.data.title}</h2>
+            <p class="muted">{g.data.description}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .guide-list { padding-bottom: 96px; }
+  .guide { display: flex; gap: 18px; align-items: flex-start; }
+  .guide .icon-tile { flex: none; margin: 0; }
+  .guide h2 { font-size: 1.1875rem; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .guide p { margin: 0; }
+</style>

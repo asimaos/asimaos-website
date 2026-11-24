@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+"""Asima Hub's release feed: builds public/feed/feed.json and signs it with the feed key, so the
+website serves both (https://<site>/feed/feed.json and feed.json.sig). Asima Hub reads only a feed
+whose signature its built-in public key verifies.
+
+    scripts/make-feed               build the feed, sign it, check the signature
+    scripts/make-feed --no-sign     build it only, to look at it
+    scripts/make-feed --new-key     make a new feed key (FEED_KEY.key and .pub), then stop
+
+Sources:
+    src/content/news/*.md   the website's news posts: their title, date and description become the
+                            feed's news, each linking to its page on the website
+    feed/releases.json      the published versions: version, channel, date, notes, and the update
+                            file and the ISO, each { url (https), size, sha256 }
+    feed/groups.json        the app groups Asima Hub offers on Asima OS
+    feed/settings.json      the links (guides, website) and the address for problem reports
+
+The feed key (FEED_KEY, default ../asimaos/build/keys/feed: feed.key and feed.pub, the same format as the
+OS's update keys) never goes into a repository. Signing uses OpenSSL (Ed25519); the secret is
+handed to it on stdin, never on a command line.
+"""
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
+from datetime import date
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+FEED = ROOT / "feed"
+NEWS = ROOT / "src" / "content" / "news"
+OUT = ROOT / "public" / "feed" / "feed.json"
+KEY = Path(os.environ.get("FEED_KEY", ROOT.parent / "asimaos" / "build" / "keys" / "feed"))
+SHA_RX = re.compile(r"^[0-9a-f]{64}$")
+VERSION_RX = re.compile(r"^\d{4}\.\d{2}\.\d{2}\.\d+$")
+# DER prefixes of an Ed25519 private key (PKCS#8) and public key (SubjectPublicKeyInfo).
+PKCS8 = bytes.fromhex("302e020100300506032b657004220420")
+SPKI = bytes.fromhex("302a300506032b6570032100")
+SECRET_HEADER = "# Asima OS update signing key (secret)"
+PUBLIC_HEADER = "# Asima OS update key (public)"
+
+
+def die(message):
+    print(f"make-feed: {message}", file=sys.stderr)
+    sys.exit(1)
+
+
+def openssl(args, data):
+    return subprocess.run(["openssl", *args], input=data, capture_output=True, check=True).stdout
+
+
+def read_hex(path):
+    lines = [l.strip() for l in path.read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")]
+    return bytes.fromhex(lines[0])
+
+
+def new_key():
+    secret, public = KEY.with_suffix(".key"), KEY.with_suffix(".pub")
+    if secret.exists():
+        die(f"{secret} exists already; a new feed key also needs a new Asima Hub, so remove it by hand first")
+    der = openssl(["genpkey", "-algorithm", "ed25519", "-outform", "DER"], b"")
+    pub = openssl(["pkey", "-inform", "DER", "-pubout", "-outform", "DER"], der)[-32:]
+    secret.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    fd = os.open(secret, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(fd, "w") as f:
+        f.write(f"{SECRET_HEADER}\n{der[-32:].hex()}\n")
+    public.write_text(f"{PUBLIC_HEADER}\n{pub.hex()}\n", encoding="utf-8")
+    print(f"make-feed: new feed key in {secret} and {public}")
+    print(f"make-feed: its public half, for Asima Hub (src/feedcheck.h): {pub.hex()}")
+    fingerprint = hashlib.sha256(pub).hexdigest()
+    print("make-feed: fingerprint: " + " ".join(fingerprint[i:i + 4] for i in range(0, 64, 4)))
+
+
+def site_url():
+    text = (ROOT / "site.config.mjs").read_text(encoding="utf-8")
+    match = re.search(r"\burl:\s*'(https://[^']+)'", text)
+    if not match:
+        die("site.config.mjs: no site url")
+    return match.group(1).rstrip("/")
+
+
+def https(url, what):
+    if not isinstance(url, str) or not url.startswith("https://"):
+        die(f"{what}: the address must start with https:// ({url!r})")
+    return url
+
+
+def front_matter(path):
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        die(f"{path.name}: no front matter")
+    head = text[4:text.index("\n---", 4)]
+    fields = {}
+    for line in head.splitlines():
+        key, _, value = line.partition(":")
+        fields[key.strip()] = value.strip().strip('"')
+    return fields
+
+
+def site_names():
+    """The names site.config.mjs gives the %tokens%, so the feed's text matches the website's."""
+    text = (ROOT / "site.config.mjs").read_text(encoding="utf-8")
+    names = dict(re.findall(r"^\s+(\w+): '([^']*)',", text, re.M))
+    match = re.search(r"^const os = '([^']+)';", text, re.M)
+    if not match:
+        die("site.config.mjs: no `const os = '...'`")
+    names.update(os=match.group(1), oslinux=f"{match.group(1)} Linux")
+    return names
+
+
+def news_items(site):
+    names = site_names()
+    fill = lambda s: re.sub(r"%([a-z]+)%", lambda m: names.get(m.group(1), m.group(0)), s)
+    items = []
+    for path in sorted(NEWS.glob("*.md")):
+        f = front_matter(path)
+        if f.get("draft") == "true":
+            continue
+        try:
+            date.fromisoformat(f.get("date", ""))
+        except ValueError:
+            die(f"{path.name}: needs a date (YYYY-MM-DD)")
+        if not f.get("title") or not f.get("description"):
+            die(f"{path.name}: needs a title and a description")
+        items.append({"date": f["date"], "title": fill(f["title"]), "text": fill(f["description"]),
+                      "link": f"{site}/news/{path.stem}/"})
+    return sorted(items, key=lambda n: n["date"], reverse=True)
+
+
+def file_entry(entry, what):
+    if not SHA_RX.match(str(entry.get("sha256", ""))) or not isinstance(entry.get("size"), int):
+        die(f"{what}: needs a size and a lowercase SHA-256")
+    return {"url": https(entry.get("url"), what), "size": entry["size"], "sha256": entry["sha256"]}
+
+
+def release(entry):
+    v = entry.get("version", "")
+    if not VERSION_RX.match(v):
+        die(f"releases.json: {v!r} is not a version (YYYY.MM.DD.N)")
+    out = {"version": v, "channel": entry.get("channel", "beta"), "date": entry["date"], "notes": entry.get("notes", [])}
+    for kind in ("update", "iso"):
+        if kind in entry:
+            out[kind] = file_entry(entry[kind], f"{v} {kind}")
+    return out
+
+
+def sign(path):
+    secret = KEY.with_suffix(".key")
+    if not secret.is_file():
+        die(f"no feed key at {secret} (restore it from the encrypted archive, or make one: --new-key)")
+    seed = read_hex(secret)
+    sig = openssl(["pkeyutl", "-sign", "-rawin", "-keyform", "DER", "-inkey", "/dev/stdin", "-in", str(path)],
+                  PKCS8 + seed)
+    Path(f"{path}.sig").write_bytes(sig)
+    public = read_hex(KEY.with_suffix(".pub"))
+    try:
+        openssl(["pkeyutl", "-verify", "-rawin", "-pubin", "-keyform", "DER", "-inkey", "/dev/stdin",
+                 "-in", str(path), "-sigfile", f"{path}.sig"], SPKI + public)
+    except subprocess.CalledProcessError:
+        die("the signature doesn't verify with feed.pub")
+
+
+def main():
+    if "--new-key" in sys.argv[1:]:
+        new_key()
+        return
+    site = site_url()
+    settings = json.loads((FEED / "settings.json").read_text(encoding="utf-8"))
+    releases = [release(r) for r in json.loads((FEED / "releases.json").read_text(encoding="utf-8"))]
+    groups = json.loads((FEED / "groups.json").read_text(encoding="utf-8"))
+    news = news_items(site)
+    feed = {"format": 2, "releases": releases, "news": news, "groups": groups,
+            "links": {k: https(v, f"settings.json {k}") for k, v in settings.get("links", {}).items() if v}}
+    if settings.get("reports", {}).get("email"):
+        feed["reports"] = {"email": settings["reports"]["email"]}
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(json.dumps(feed, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"make-feed: {OUT.relative_to(ROOT)}: {len(releases)} release(s), {len(news)} news item(s), {len(groups)} group(s)")
+    if "--no-sign" in sys.argv[1:]:
+        return
+    sign(OUT)
+    print(f"make-feed: signed with the feed key and checked: {OUT.relative_to(ROOT)}.sig")
+
+
+main()

@@ -1,0 +1,134 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site, names, links, release, requirements } from '../../site.config.mjs';
+
+const date = release.date ? new Date(release.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+const steps = [
+  ['Check the download', 'Make sure the file is genuine and complete.', '/guides/check-a-download/'],
+  ['Write the USB stick', 'With Fedora Media Writer, balenaEtcher, dd, or ' + names.hub + '.', '/guides/install/'],
+  ['Install', 'Start from the stick, try the live system, then install.', '/guides/install/'],
+];
+---
+<Base title="Download" description={`Download ${site.longName}: what you need, how to check the download and how to install it.`}>
+  <section class="hero-band">
+    <div class="container page-head dl-head">
+      <p class="eyebrow">Download</p>
+      <h1>Get {site.name}</h1>
+      <p class="lead">Free to download and use, now and always. One ISO installs it; after that, updates are one file each.</p>
+    </div>
+  </section>
+
+  <section class="container dl-cards">
+    {release.public ? (
+      <div class="card dl-main">
+        <div>
+          <span class="pill pill-ok pill-dot">Version {release.version}</span>
+          <h2>{site.longName} {release.version}</h2>
+          <p class="muted">Released {date}. The ISO installs it on a PC, or tries it without installing.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-primary" href={links.downloads}><Icon name="download" />Download the ISO ({release.isoSize})</a>
+          <a class="btn btn-secondary" href={links.downloads}>Checksums and signature</a>
+        </div>
+        <p class="muted small">Files are hosted on SourceForge. The update file ({release.updateSize}) is next to the ISO, for PCs that already run {site.name}.</p>
+      </div>
+    ) : (
+      <div class="card dl-main">
+        <div>
+          <span class="pill pill-info pill-dot">In testing</span>
+          <h2>The first public release is on its way</h2>
+          <p class="muted">
+            {site.name} is being tested on real PCs before anyone is asked to trust it with their files. The download
+            will appear here as soon as it&rsquo;s ready, with its checksums and signature.
+          </p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/news/"><Icon name="rss" />Follow the news</a>
+          <a class="btn btn-secondary" href={links.status}>What works today <Icon name="external" /></a>
+        </div>
+      </div>
+    )}
+    <div class="card dl-hub">
+      <img src="/apps/hub.svg" alt="" width="48" height="48" />
+      <h3>{names.hub}</h3>
+      <p class="muted">Checks what {site.name} will do on your PC, downloads it and writes the USB stick for you. For Linux now; Windows later.</p>
+      <a href={links.hub}>Get {names.hub} <Icon name="external" size={16} class="inline-icon" /></a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>What you need</h2>
+        <p class="lead">Most 64-bit PCs with UEFI will do. {site.name} uses a whole disk of its own.</p>
+      </div>
+      <dl class="reqs">
+        {requirements.map(([term, detail]) => <div><dt>{term}</dt><dd>{detail}</dd></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head"><h2>Three steps</h2></div>
+      <ol class="grid grid-3 step-cards">
+        {steps.map(([title, text, href], i) => (
+          <li class="card">
+            <span class="step-no">{i + 1}</span>
+            <h3>{title}</h3>
+            <p class="muted">{text}</p>
+            <a href={href}>Read the guide <Icon name="arrow" size={16} class="inline-icon" /></a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Check before you install</p>
+        <h2>Every release is signed</h2>
+        <p class="lead">Each release comes with a list of checksums signed with the release key. If a file was changed or damaged on the way, it won&rsquo;t match.</p>
+        <p><a href="/guides/check-a-download/">How to check a download <Icon name="arrow" size={18} class="inline-icon" /></a></p>
+      </div>
+      <div class="card">
+        <h3>The release key&rsquo;s fingerprint (SHA-256)</h3>
+        {release.keyFingerprint ? (
+          <>
+          <code class="fingerprint">{release.keyFingerprint}</code>
+          <p class="muted small">Compare it with <code>asimaos-release-key.txt</code> next to the download. It is also published in the source code&rsquo;s repository, so you never have to trust a single place.</p>
+          </>
+        ) : (
+          <p class="muted small">It is published here, in the release notes and in the source code&rsquo;s repository with the first release, so you never have to trust a single place.</p>
+        )}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .dl-head { padding-bottom: clamp(96px, 6rem + 4vw, 160px); }
+  .dl-head h1 { color: #fff; }
+  .dl-cards {
+    display: grid; gap: 20px;
+    margin-top: calc(-1 * clamp(64px, 4rem + 3vw, 120px));
+    position: relative;
+  }
+  @media (min-width: 960px) { .dl-cards { grid-template-columns: 2fr 1fr; } }
+  .dl-main { display: grid; gap: 20px; padding: clamp(24px, 1.5rem + 1vw, 40px); box-shadow: var(--shadow-l); }
+  .dl-main h2 { margin-top: 14px; font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); }
+  .dl-main p { margin: 0; }
+  .dl-hub { box-shadow: var(--shadow-l); }
+  .dl-hub img { width: 48px; height: 48px; margin-bottom: 12px; }
+  .small { font-size: 0.9375rem; }
+  .reqs { margin: 0; display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-l); overflow: hidden; }
+  .reqs div { display: grid; gap: 4px 24px; padding: 18px 22px; background: var(--surface); }
+  @media (min-width: 720px) { .reqs div { grid-template-columns: 180px 1fr; } }
+  .reqs dt { font-weight: 700; }
+  .reqs dd { margin: 0; color: var(--text-muted); }
+  .step-cards { margin: 0; padding: 0; list-style: none; }
+  .step-no { display: grid; place-items: center; width: 38px; height: 38px; margin-bottom: 14px; border-radius: 50%; background: var(--brand); color: #fff; font-weight: 700; }
+  :global(.inline-icon) { display: inline-block; vertical-align: -3px; }
+</style>

@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, names } from '../../site.config.mjs';
+---
+<Base title="Privacy" description={`What the ${site.name} website and operating system record about you: as little as possible.`}>
+  <section class="container page-head">
+    <p class="eyebrow">Privacy</p>
+    <h1>Privacy</h1>
+    <p class="lead">Short version: no cookies, no tracking, no accounts, here or in the operating system.</p>
+  </section>
+  <section class="container prose policy">
+    <h2>This website</h2>
+    <ul>
+      <li>It sets <strong>no cookies</strong> and has no accounts, forms, ads or third-party scripts.</li>
+      <li>Your choice of light or dark is kept in your own browser only, and never sent anywhere.</li>
+      <li>The search runs entirely in your browser; what you type isn&rsquo;t sent anywhere.</li>
+      {site.analytics
+        ? <li>Visits are counted with Cloudflare Web Analytics, which uses no cookies and keeps no personal data: only totals such as how often a page was viewed.</li>
+        : <li>Visits are not counted.</li>}
+      <li>The site is hosted on Cloudflare Pages. Like any web server, Cloudflare handles your IP address to deliver the pages and to protect against attacks, as described in Cloudflare&rsquo;s own privacy policy.</li>
+      <li>Downloads are hosted on SourceForge, and the source code on GitHub; their own privacy policies apply there.</li>
+    </ul>
+
+    <h2>The operating system</h2>
+    <ul>
+      <li>{site.name} doesn&rsquo;t phone home and has no telemetry.</li>
+      <li>{names.updater} never looks for updates online by itself; you bring the update file, or {names.hub} downloads it.</li>
+      <li>{names.hub} is the one app that goes online, for the news and the downloads, and you install it only if you want it.</li>
+      <li>Problem reports are made on your PC by {names.maintenance}. You read them and decide whether to share them.</li>
+      <li>Fingerprints and faces for sign-in stay on your PC.</li>
+    </ul>
+
+    <h2>Questions</h2>
+    <p>Ask on the <a href="/community/">community page</a>.</p>
+  </section>
+</Base>
+
+<style>
+  .policy { padding-bottom: 96px; }
+  .policy h2:first-child { margin-top: 0; }
+</style>

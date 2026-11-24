@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from 'astro:content';
+import Article from '../../layouts/Article.astro';
+import { site, links } from '../../../site.config.mjs';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((guide) => ({ params: { id: guide.id }, props: { guide } }));
+}
+
+const { guide } = Astro.props;
+const { Content, headings } = await render(guide);
+const url = new URL(`/guides/${guide.id}/`, site.url).href;
+const jsonld = [
+  {
+    '@context': 'https://schema.org', '@type': 'TechArticle', headline: guide.data.title,
+    description: guide.data.description, url, inLanguage: site.language,
+    publisher: { '@type': 'Organization', name: site.name, url: site.url },
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Guides', item: new URL('/guides/', site.url).href },
+      { '@type': 'ListItem', position: 2, name: guide.data.title, item: url },
+    ],
+  },
+];
+---
+<Article title={guide.data.title} description={guide.data.description} eyebrow="Guide" back={['All guides', '/guides/']}
+  headings={headings} jsonld={jsonld} edit={`${links.code}/blob/main/${guide.data.source}`}>
+  <Content />
+</Article>

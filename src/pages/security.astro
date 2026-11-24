@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site, names, links, release } from '../../site.config.mjs';
+
+const layers = [
+  ['key', 'Signed releases', 'Each release’s checksums are signed with the release key. Updates are signed too, and an installed system accepts only updates signed by the build it came from.'],
+  ['shield', 'Signed start-up', 'Secure Boot starts only signed parts: Microsoft’s shim, the boot loader and each version’s signed boot image, which carries the kernel, its start-up files and the system image’s checksum.'],
+  ['layers', 'A system that checks itself', 'The system image is read-only and verified block by block while it runs (dm-verity), so a changed file is noticed, not used.'],
+  ['lock', 'Encrypted disk', 'LUKS2 encryption with a passphrase and a recovery key. The TPM chip can open it, only for the PC’s own start-up chain, automatically or after a PIN.'],
+  ['chip', 'Locked-down kernel', 'With Secure Boot on, only signed drivers load, NVIDIA’s included, and the running system can’t be patched from inside.'],
+  ['face', 'Asked, never assumed', `Every app’s system service acts only after polkit says yes: your password, or your fingerprint or face if you set them up.`],
+];
+---
+<Base title="Security" description={`How ${site.name} protects your PC, how releases are signed, and how to report a security problem.`}>
+  <section class="container page-head">
+    <p class="eyebrow">Security</p>
+    <h1>Security, from the start-up up</h1>
+    <p class="lead">Security in {site.name} isn&rsquo;t an add-on: the way it starts, updates and stores your files is designed to resist tampering.</p>
+  </section>
+
+  <section class="section section-alt" id="report">
+    <div class="container split">
+      <div>
+        <h2>Found a security problem?</h2>
+        <p class="lead">Please report it privately, never in a public issue, and give us time to fix it before it becomes public.</p>
+      </div>
+      <div class="card">
+        <ol class="report-steps">
+          <li>Open the <a href={links.code}>source code&rsquo;s page on GitHub</a>, choose <strong>Security</strong>, then <strong>Report a vulnerability</strong>. Only the maintainers see it.</li>
+          <li>Say which version you run ({names.updater} shows it), what you found, and how to reproduce it.</li>
+          <li>You&rsquo;ll hear back within a week. Once a fix ships, the report can become public, with your name if you like.</li>
+        </ol>
+        <a class="btn btn-secondary" href={links.securityPolicy}>The full security policy <Icon name="external" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><h2>How your PC is protected</h2></div>
+      <div class="grid grid-3">
+        {layers.map(([icon, title, text]) => (
+          <div class="card">
+            <span class="icon-tile"><Icon name={icon} /></span>
+            <h3>{title}</h3>
+            <p class="muted">{text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="release-key">
+    <div class="container narrow">
+      <h2>The release key</h2>
+      <p class="lead">Check every download against it. The same fingerprint is in the source code&rsquo;s repository and the release notes.</p>
+      {release.keyFingerprint
+        ? <code class="fingerprint">{release.keyFingerprint}</code>
+        : <p class="fingerprint">Published here with the first release.</p>}
+      <p class="muted">SHA-256 fingerprint of the Ed25519 release key. <a href="/guides/check-a-download/">How to check a download</a>.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <h2>This website</h2>
+      <p class="muted">Static pages with no accounts, no forms and no third-party scripts, served over HTTPS with a strict Content-Security-Policy. See the <a href="/privacy/">privacy page</a> for what is and isn&rsquo;t recorded.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .report-steps { margin: 0 0 20px; padding-left: 1.3em; display: grid; gap: 10px; }
+  .narrow { max-width: 50rem; }
+  .narrow .fingerprint { margin: 20px 0 12px; }
+</style>

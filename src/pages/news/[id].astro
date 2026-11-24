@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from 'astro:content';
+import Article from '../../layouts/Article.astro';
+import { site } from '../../../site.config.mjs';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news', (p) => !p.data.draft);
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const day = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const jsonld = [{
+  '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.data.title,
+  description: post.data.description, datePublished: post.data.date.toISOString(),
+  url: new URL(`/news/${post.id}/`, site.url).href, inLanguage: site.language,
+  author: { '@type': 'Organization', name: site.name, url: site.url },
+  publisher: { '@type': 'Organization', name: site.name, url: site.url },
+}];
+---
+<Article title={post.data.title} description={post.data.description} eyebrow={day} back={['All news', '/news/']}
+  headings={headings} published={post.data.date} jsonld={jsonld}>
+  <Content />
+</Article>

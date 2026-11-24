@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+import { site, links } from '../../site.config.mjs';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="about">
+        <a class="brand" href="/"><img src="/mark.svg" alt="" width="34" height="34" /><span>{site.name}</span></a>
+        <p class="muted">{site.tagline} A free Linux for everyday use, gaming and development.</p>
+        <div class="btn-row">
+          <a class="icon-btn" href={links.code} aria-label="The code on GitHub"><Icon name="github" /></a>
+          <a class="icon-btn" href="/news/rss.xml" aria-label="News as an RSS feed"><Icon name="rss" /></a>
+        </div>
+      </div>
+      <div>
+        <h2>{site.name}</h2>
+        <ul>
+          <li><a href="/features/">Features</a></li>
+          <li><a href="/apps/">Apps</a></li>
+          <li><a href="/download/">Download</a></li>
+          <li><a href="/news/">News</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Help</h2>
+        <ul>
+          <li><a href="/guides/">Guides</a></li>
+          <li><a href="/about/#questions">Questions</a></li>
+          <li><a href="/community/">Community</a></li>
+          <li><a href="/search/">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Project</h2>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/security/">Security</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href={links.code}>Source code</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© {year} the {site.name} project. Free software under the <a href={links.license}>GPL-3.0-or-later</a>.</p>
+      <p>Arch Linux, KDE and other names belong to their owners. {site.name} is not affiliated with them.</p>
+    </div>
+  </div>
+</footer>

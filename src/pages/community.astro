@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site, names, links } from '../../site.config.mjs';
+
+const ways = [
+  { icon: 'book', title: 'Read the guides', text: 'Installing, the recovery key, updates and repairs, step by step.', href: '/guides/', cta: 'Open the guides' },
+  links.discussions
+    ? { icon: 'message', title: 'Ask a question', text: 'Ask, share ideas and help others in the discussions.', href: links.discussions, cta: 'Join the discussions' }
+    : { icon: 'message', title: 'Ask a question', text: 'Questions are welcome as issues on GitHub until the discussions open.', href: links.issues, cta: 'Ask on GitHub' },
+  { icon: 'bug', title: 'Report a problem', text: `Say what you did, what happened and which version you run. ${names.maintenance} → Health makes a problem report you can attach.`, href: links.newIssue, cta: 'Report it on GitHub' },
+  { icon: 'shield', title: 'Report a security problem', text: 'Privately, please, never in a public issue.', href: '/security/', cta: 'How to report it' },
+  { icon: 'code', title: 'Contribute', text: 'Build it, test it on your hardware, improve a guide or send a change.', href: links.contributing, cta: 'How to contribute' },
+  { icon: 'rss', title: 'Follow the news', text: 'Releases and what changed, on the website or in your feed reader.', href: '/news/', cta: 'Read the news' },
+];
+---
+<Base title="Community" description={`Get help with ${site.name}, report a problem, or help make it better.`}>
+  <section class="container page-head">
+    <p class="eyebrow">Community</p>
+    <h1>Get help, and help out</h1>
+    <p class="lead">{site.name} is built in the open. Questions, problem reports and tests on real hardware all make it better.</p>
+  </section>
+  <section class="container ways">
+    <div class="grid grid-3">
+      {ways.map((w) => (
+        <a class="card card-link way" href={w.href}>
+          <span class="icon-tile"><Icon name={w.icon} /></span>
+          <h2>{w.title}</h2>
+          <p class="muted">{w.text}</p>
+          <span class="go">{w.cta} <Icon name="arrow" size={18} /></span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="section section-alt">
+    <div class="container narrow">
+      <h2>Be kind</h2>
+      <p class="lead">Everyone here is welcome, whatever their experience. Be patient with newcomers, assume good intent, and keep criticism about the work, never the person.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ways { padding-bottom: 80px; }
+  .way { display: flex; flex-direction: column; }
+  .way h2 { font-size: 1.25rem; margin-bottom: 6px; }
+  .way p { flex: 1; }
+  .go { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; color: var(--accent-text); font-weight: 600; }
+  .narrow { max-width: 46rem; }
+</style>

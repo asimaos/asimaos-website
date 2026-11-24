@@ -1,0 +1,158 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Screenshot from '../components/Screenshot.astro';
+import { site, names, release } from '../../site.config.mjs';
+
+const sections = [
+  {
+    id: 'updates', icon: 'update', eyebrow: 'Updates and versions',
+    title: 'Updates that can’t leave you stuck',
+    lead: 'Every update is the whole system in one signed file. It is checked before anything is written, and your current version stays as the backup.',
+    points: [
+      'One file with the whole system: checked for its signature, that it’s newer and that there’s room',
+      'Installs in the background and picks up where it stopped after an interruption, even a power cut',
+      'Any version jumps straight to the newest: no need to install every version in between',
+      'The start menu keeps two versions. Go back with one click, or start the old one just once to compare',
+      'Snapshots of your files and settings are taken before every update',
+    ],
+    shot: 'updater-versions', alt: `${names.updater}: the version running now and the backup version`,
+  },
+  {
+    id: 'safety-net', icon: 'rescue', eyebrow: 'The safety net',
+    title: 'When something goes wrong, it fixes itself',
+    lead: 'A version counts as good only after the login screen has stayed up and the health checks pass. Until then, your PC is ready to go back.',
+    points: [
+      'A version that fails to start three times in a row is replaced by the backup, automatically',
+      'If the desktop keeps failing after you sign in, ' + names.updater + ' offers to go back',
+      `${names.rescue} starts from the start menu and runs in memory: unlock the disk, check and repair it, restore your files, reinstall`,
+      'The USB stick can repair the start menu and boot files, or install its own version while keeping your files',
+      'A disk guard asks before any tool wipes the disk',
+    ],
+    shot: 'rescue-home', alt: `${names.rescue}: the repair tools`,
+  },
+  {
+    id: 'security', icon: 'shield', eyebrow: 'Security',
+    title: 'Locked down from the first start',
+    lead: 'Everything that starts the computer is signed, the system checks itself while it runs, and your disk is encrypted unless you choose otherwise.',
+    points: [
+      'Secure Boot with Microsoft’s shim and the build’s own key, approved once on a blue screen. Or put your own keys in the firmware',
+      'The kernel is locked down: only signed drivers load, NVIDIA’s included',
+      'Encrypted disk with a recovery key made when you install',
+      'The TPM chip opens the disk for you: automatically (recommended) or after a short PIN. Asima Rescue and other systems can’t use it',
+      'Admin tasks ask for your password, or your fingerprint or face if you set them up',
+      `${names.shield}, the firewall: Public, Home or Developer, plus a VPN kill-switch`,
+    ],
+    shot: 'maintenance-security-pin', alt: `${names.maintenance}: unlocking the disk with the TPM chip and a PIN`,
+  },
+  {
+    id: 'your-data', icon: 'data', eyebrow: 'Your data',
+    title: 'Your files are kept apart and kept safe',
+    lead: 'Your files, apps and settings live apart from the system. Updates, going back and repairs never touch them.',
+    points: [
+      'Snapshots of your files and settings: daily, weekly or monthly, your choice',
+      'Encrypted backups to a drive or a server, which restore one file every time to prove they work',
+      'Each backup also keeps a copy of the disk’s encryption header',
+      '“Reset settings” brings back the standard settings and keeps your files',
+      'A factory reset starts fresh, with nothing kept',
+    ],
+    shot: 'maintenance-backups', alt: `${names.maintenance}: snapshots and backups`,
+  },
+  {
+    id: 'apps', icon: 'box', eyebrow: 'Apps',
+    title: 'Every kind of app, without risking the system',
+    lead: 'Apps are added next to the system, never into it. Pick them in Discover, or use whatever you’re used to.',
+    points: [
+      'Flathub, set up in Discover: browsers, office, Steam, creative tools',
+      'Snap and AppImage: double-click and go',
+      'Android apps through Waydroid, set up in ' + names.dev,
+      'Nix for command-line tools, and Distrobox for any distribution’s packages',
+      'KDE’s standard apps included: Dolphin, Konsole, Kate, Okular, Gwenview, Spectacle and more',
+    ],
+    shot: 'dev-android', alt: `${names.dev}: Android apps`,
+  },
+  {
+    id: 'gaming', icon: 'gamepad', eyebrow: 'Gaming',
+    title: 'Set up for games out of the box',
+    lead: 'The plumbing games need is in the system and switched on for everyone. ' + names.gaming + ' puts the controls in one place.',
+    points: [
+      'A gaming CPU scheduler (sched-ext LAVD) from the first start',
+      'NTSYNC for Windows games, and GameMode',
+      'Controllers, and a handheld’s power limit, refresh rate, frame limit, FSR and fan',
+      'A full-screen game mode with Steam, for handhelds',
+      'NVIDIA’s driver, signed for Secure Boot; AMD and Intel through Mesa',
+      'RGB lighting that the kernel can drive',
+    ],
+    shot: 'gaming-handheld', alt: `${names.gaming} on a handheld`,
+  },
+  {
+    id: 'developers', icon: 'code', eyebrow: 'Developers',
+    title: 'A workstation that stays clean',
+    lead: 'Experiment in containers and virtual machines, never in the system itself.',
+    points: [
+      'Podman (with the Docker command) and Distrobox',
+      'Virtual machines with QEMU and libvirt, even with a graphics card of their own',
+      'Nix programs, without touching the system',
+      'git, ssh, gdb, strace, perf, Python and more already there',
+      `The ${names.command} command does the apps’ jobs in a terminal`,
+    ],
+    shot: 'dev-machines', alt: `${names.dev}: virtual machines`,
+  },
+  {
+    id: 'hardware', icon: 'chip', eyebrow: 'Your device',
+    title: 'Made for laptops, desktops and handhelds',
+    lead: names.manager + ' brings the settings for your particular device together.',
+    points: [
+      'Power modes and battery care (charge limits), on laptops that support them',
+      'Fingerprint and face sign-in, with a blink check for ordinary webcams',
+      'Display and keyboard light',
+      'Laptops with two graphics cards, and a second card for virtual machines',
+      'Runs in virtual machines too: QEMU/KVM, VirtualBox, VMware and Hyper-V',
+    ],
+    shot: 'manager-biometrics', alt: `${names.manager}: fingerprint and face sign-in`,
+  },
+];
+---
+<Base title="Features" description={`What ${site.longName} does: safe updates with automatic fallback, Asima Rescue, Secure Boot and encryption, every kind of app, gaming and development.`}>
+  <section class="container page-head">
+    <p class="eyebrow">Features</p>
+    <h1>Everything {site.name} does for you</h1>
+    <p class="lead">An operating system that updates safely, repairs itself and protects your data, built from standard parts that are tested together.</p>
+    <nav class="jump" aria-label="On this page">
+      {sections.map((s) => <a class="pill pill-accent" href={`#${s.id}`}>{s.eyebrow}</a>)}
+    </nav>
+  </section>
+
+  {sections.map((s, i) => (
+    <section id={s.id} class:list={['section', { 'section-alt': i % 2 === 0 }]}>
+      <div class:list={['container', 'split', { reverse: i % 2 === 1 }]}>
+        <div>
+          <span class="icon-tile"><Icon name={s.icon} /></span>
+          <p class="eyebrow">{s.eyebrow}</p>
+          <h2>{s.title}</h2>
+          <p class="lead">{s.lead}</p>
+          <ul class="checks">{s.points.map((p) => <li>{p}</li>)}</ul>
+        </div>
+        <Screenshot name={s.shot} alt={s.alt} />
+      </div>
+    </section>
+  ))}
+
+  <section class="section">
+    <div class="container center">
+      <h2>See it for yourself</h2>
+      <p class="lead">Built on Arch Linux packages from {release.base.snapshot}, systemd {release.base.systemd}, Linux {release.base.kernel} and KDE Plasma {release.base.plasma}.</p>
+      <div class="btn-row center-row">
+        <a class="btn btn-primary" href="/download/"><Icon name="download" />Download</a>
+        <a class="btn btn-secondary" href="/apps/">Meet the apps</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .jump a { text-decoration: none; }
+  .jump a:hover { filter: brightness(0.96); }
+  .center-row { justify-content: center; }
+</style>

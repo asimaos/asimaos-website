@@ -1,0 +1,69 @@
+---
+import '@fontsource-variable/noto-sans';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { site } from '../../site.config.mjs';
+
+interface Props {
+  title: string;            // the page's own title; the site's name is added
+  description?: string;
+  image?: string;           // path of the preview picture for links shared elsewhere
+  type?: 'website' | 'article';
+  published?: Date;
+  jsonld?: object[];
+  noindex?: boolean;        // search and 404: not in search engines, not in the site search
+  fullTitle?: boolean;      // the title is used as it is (the start page)
+}
+const {
+  title, description = site.description, image = '/og.png', type = 'website', published,
+  jsonld = [], noindex = false, fullTitle = false,
+} = Astro.props;
+
+const pageTitle = fullTitle ? title : `${title} · ${site.name}`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const imageUrl = new URL(image, site.url).href;
+---
+<!doctype html>
+<html lang={site.language}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline src="/theme.js"></script>
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0a6cd6" />
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} news`} href="/news/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name}: ${site.tagline}`} />
+    <meta property="og:locale" content={site.language.replace('-', '_')} />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    {jsonld.length > 0 && <JsonLd data={jsonld.length === 1 ? jsonld[0] : jsonld} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to the content</a>
+    <Header />
+    <main id="main" data-pagefind-body={noindex ? undefined : ''}>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+ "format": 2,
+ "releases": [],
+ "news": [
+  {
+   "date": "2026-11-24",
+   "title": "Asima OS: where it stands",
+   "text": "What Asima OS is, what is being tested now, and what comes before the first public release.",
+   "link": "https://asimaos.pages.dev/news/2026-11-24-where-we-stand/"
+  }
+ ],
+ "groups": [],
+ "links": {
+  "guides": "https://asimaos.pages.dev/guides/",
+  "website": "https://asimaos.pages.dev/"
+ }
+}
