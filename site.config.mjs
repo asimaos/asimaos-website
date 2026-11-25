@@ -64,7 +64,7 @@ export const links = {
   hub: `${hubCode}/releases/latest`,
   hubCode,
   // The ISO and update files go to SourceForge (free for open-source projects).
-  downloads: 'https://sourceforge.net/projects/asimaos/files/',
+  downloads: 'https://sourceforge.net/projects/asima-os/files/',
 };
 
 // The release the Download page offers. While `public` is false the page says the first public
