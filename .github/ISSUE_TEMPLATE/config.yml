@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: A security problem
+    url: https://github.com/asimaos/asimaos-website/security/advisories/new
+    about: Report it privately, never in a public issue.
+  - name: A problem with Asima OS itself
+    url: https://github.com/asimaos/asimaos/issues
+    about: Asima OS and its apps have their own repository.
