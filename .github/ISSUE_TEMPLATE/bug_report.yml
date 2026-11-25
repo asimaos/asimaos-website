@@ -1,0 +1,18 @@
+name: Something on the website is wrong
+description: A broken link, a mistake, or a page that doesn't show right.
+labels: [bug]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: The page
+      description: Its address, for example https://asimaos.pages.dev/guides/install/
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What is wrong
+      description: And, for a display problem, your browser and device.
+    validations:
+      required: true
