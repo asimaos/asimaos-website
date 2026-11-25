@@ -13,7 +13,7 @@ third-party scripts.
 | Guides | `src/content/guides/`, **imported** from the OS's `docs/guides` (their one home): `scripts/import-guides.py` |
 | News | `src/content/news/` (Markdown; the RSS feed and Asima Hub's news are made from it) |
 | Asima Hub's feed | `public/feed/feed.json` and its signature, made by `scripts/make-feed` from the news and `feed/` (releases, app groups, links) |
-| App screenshots | `src/assets/screens/`, **imported** from the OS's renders: `scripts/import-screenshots.sh` |
+| App screenshots | `src/assets/screens/`, **imported** from the renders of the OS and of Asima Hub: `scripts/import-screenshots.sh` |
 | Look | `src/styles/global.css`: the apps' Asima UI colours, light and dark |
 | Security headers | `src/lib/headers.mjs` writes `dist/_headers` (Content-Security-Policy and the rest) |
 | Preview picture and PNG icons | `public/og.png`, `public/*.png`, made by `scripts/make-images.mjs` |
@@ -41,7 +41,7 @@ given):
 
 ```bash
 scripts/import-guides.py [OS]         # docs/guides → src/content/guides
-scripts/import-screenshots.sh [OS]    # apps/screenshots → src/assets/screens
+scripts/import-screenshots.sh [OS [HUB]]   # asimaos/apps/screenshots, asimaos-hub/screenshots → src/assets/screens
 ```
 
 ## Asima Hub's feed
