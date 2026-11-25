@@ -14,3 +14,4 @@ short, `scripts/run.sh npm ci` and `scripts/run.sh npm run build` in a rootless 
   isn't merged here directly: its change is applied there, keeping you as its author, and appears
   here with the next publish. Contributions are under the [GPL-3.0-or-later](LICENSE); no sign-off
   line or extra agreement is needed.
+- Everyone here follows Asima OS's [code of conduct](https://github.com/asimaos/asimaos/blob/main/CODE_OF_CONDUCT.md).
