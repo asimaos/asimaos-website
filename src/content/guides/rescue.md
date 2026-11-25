@@ -22,7 +22,15 @@ row, the backup starts by itself; Rescue is there for when that isn't enough.
 | Factory reset | %os% starts fresh with a new account |
 | Erase the whole disk | Everything on it, %os% included |
 
-If even %rescue% doesn't start, start the computer from the %os% USB stick and choose
-**Repair this computer**. It can also install the USB stick's version of %os% (answer yes
-when it asks): your files, apps and settings stay. Use that when updates stopped working, for
-example after the project changed its release key.
+If even %rescue% doesn't start, start the computer from the %os% USB stick, open
+**Install %os%** and choose **Repair an installed %os%**. Choose the disk (and type its
+passphrase or recovery key), then what the repair does:
+
+- **Put back the start-up** (always): the boot partition is checked, and the boot loader, each
+  version's boot image, %rescue% and the start menu are written again.
+- **Install the USB stick's version**: use it when updates stopped working, for example after the
+  project changed its release key, or when the computer is more than a year behind.
+- **Bring back the settings and accounts** from the newest snapshot; the ones there now are kept
+  aside on the disk, not deleted.
+
+Your files are never touched.

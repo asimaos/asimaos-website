@@ -8,20 +8,20 @@ const principles = [
   ['layers', 'Standard parts, put together carefully', `Arch Linux packages from a fixed snapshot, Arch’s standard kernel and KDE’s standard desktop. ${site.name} adds the glue and the safety net, not another flavour to learn.`],
   ['back', 'Always a way back', 'Every change can be undone: updates keep the previous version, snapshots keep your files, and the repair tools work even when the system doesn’t start.'],
   ['eye', 'Honest and plain', 'Apps say what they do in plain words, show real information or say they can’t, and explain exactly what a reset or a wipe will remove.'],
-  ['lock', 'Private by default', `The system doesn’t phone home. ${names.updater} never looks online by itself; ${names.hub}, the one online app, is optional.`],
+  ['lock', 'Private by default', `The system doesn’t phone home and has no telemetry. ${names.updater} never looks online by itself; ${names.appcenter} goes online only to the app stores, and ${names.hub} is optional.`],
 ];
 
 const faq = [
   ['Is it free?', `Yes. ${site.name} is free to download and use, and its code is open under the GPL-3.0-or-later.`],
   ['Is it ready to use?', `Not yet for anything important. It is being tested on real PCs; the first public release comes when those tests say it’s ready. <a href="/news/">The news</a> says when.`],
-  ['Is it Arch Linux?', `It is built from Arch Linux packages, pinned to one snapshot and tested together, but it works differently: the system is one read-only image updated as a whole, and there is no package manager to install into it. Apps come from Flathub, Snap, AppImage, Nix and containers.`],
+  ['Is it Arch Linux?', `It is built from Arch Linux packages, pinned to one snapshot and tested together, but it works differently: the system is one read-only image updated as a whole, and there is no package manager to install into it. Apps are added next to it, with ${names.appcenter}.`],
   ['Can I install it next to Windows?', `On another disk, yes. ${site.name} uses the whole disk you choose and never shares a disk with Windows, so neither can break the other. ${names.maintenance} can make sure the PC starts ${site.name} first.`],
   ['Do I need Secure Boot or a TPM chip?', 'No. Both make it safer, and are used when the PC has them. Without a TPM chip, you type the disk’s passphrase at every start.'],
-  ['How do I install programs?', `Most apps come from Flathub through Discover. Snap and AppImage work too, Nix has command-line tools, and Distrobox gives you any distribution’s packages in a container.`],
+  ['How do I install programs?', `With ${names.appcenter}: Flatpak apps from Flathub, Snap, AppImage, Android apps, Windows programs (with Wine), and developer tools from Nix, Homebrew, pipx, npm, cargo, Go and Conda, all in one place. Containers (Distrobox, Toolbx) give you any distribution’s packages. KDE’s Discover is there too.`],
   ['Does it work with NVIDIA graphics?', 'Yes: GTX 16xx, RTX 20xx and newer use NVIDIA’s own driver, signed so it loads with Secure Boot. Older NVIDIA cards use the open drivers, which are fine for the desktop but weak for games.'],
   ['What if an update goes wrong?', `If the new version doesn’t start three times in a row, the PC goes back to the previous one by itself. You can also go back by hand in ${names.updater}, or repair everything from ${names.rescue}.`],
   ['Where do updates come from?', `Each update is one file signed by the build that made your system; ${site.name} refuses any other. ${names.hub} downloads them, or you bring the file yourself.`],
-  ['Who makes it?', `${site.name} is an independent project, built in the open. It is not affiliated with Arch Linux or KDE, whose work it builds on.`],
+  ['Who makes it?', `${site.name} is an independent project, built in the open. It is not affiliated with Arch Linux or KDE, whose work it builds on: <a href="/credits/">the credits</a> name everyone whose work it uses.`],
 ];
 
 const faqJson = {

@@ -51,7 +51,8 @@ In a terminal: `asimaos versions`, `asimaos use V1 --once`, `asimaos use V2`.
   and installing the same file again must finish it.
 - %rescue% (start menu → %rescue%): unlock the disk, reinstall the running version from
   its update file on a USB drive.
-- "Repair this computer": start the USB stick and run `sudo /run/initramfs/live/asimaos/asimaos-repair`.
+- Repair: start the USB stick, open Install %os% and choose **Repair an installed %os%**
+  (in a terminal: `sudo /run/initramfs/live/asimaos/asimaos-repair`).
 - Secure Boot with the blue approval screen (MokManager), TPM unlock (%maintenance% →
   Security), NVIDIA drivers with lockdown, face and fingerprint sign-in.
 

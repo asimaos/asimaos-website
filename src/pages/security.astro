@@ -5,8 +5,8 @@ import { site, names, links, release } from '../../site.config.mjs';
 
 const layers = [
   ['key', 'Signed releases', 'Each release’s checksums are signed with the release key. Updates are signed too, and an installed system accepts only updates signed by the build it came from.'],
-  ['shield', 'Signed start-up', 'Secure Boot starts only signed parts: Microsoft’s shim, the boot loader and each version’s signed boot image, which carries the kernel, its start-up files and the system image’s checksum.'],
-  ['layers', 'A system that checks itself', 'The system image is read-only and verified block by block while it runs (dm-verity), so a changed file is noticed, not used.'],
+  ['shield', 'Signed start-up', 'Secure Boot starts only signed parts: the shim Microsoft signs, the boot loader and each version’s signed boot image, which carries the kernel, its start-up files and the system image’s checksum.'],
+  ['layers', 'A system that checks itself', 'The system image is read-only and verified block by block while it runs (dm-verity), so a changed file is noticed, not used. System extensions load only when they are signed.'],
   ['lock', 'Encrypted disk', 'LUKS2 encryption with a passphrase and a recovery key. The TPM chip can open it, only for the PC’s own start-up chain, automatically or after a PIN.'],
   ['chip', 'Locked-down kernel', 'With Secure Boot on, only signed drivers load, NVIDIA’s included, and the running system can’t be patched from inside.'],
   ['face', 'Asked, never assumed', `Every app’s system service acts only after polkit says yes: your password, or your fingerprint or face if you set them up.`],

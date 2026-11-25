@@ -12,7 +12,7 @@ const sections = [
     points: [
       'One file with the whole system: checked for its signature, that it’s newer and that there’s room',
       'Installs in the background and picks up where it stopped after an interruption, even a power cut',
-      'Any version jumps straight to the newest: no need to install every version in between',
+      'Any version from the past year jumps straight to the newest; an older one updates with the repair tools, keeping your files',
       'The start menu keeps two versions. Go back with one click, or start the old one just once to compare',
       'Snapshots of your files and settings are taken before every update',
     ],
@@ -36,12 +36,12 @@ const sections = [
     title: 'Locked down from the first start',
     lead: 'Everything that starts the computer is signed, the system checks itself while it runs, and your disk is encrypted unless you choose otherwise.',
     points: [
-      'Secure Boot with Microsoft’s shim and the build’s own key, approved once on a blue screen. Or put your own keys in the firmware',
+      'Secure Boot with the shim Microsoft signs and the build’s own key, approved once on a blue screen. Or put your own keys in the firmware',
       'The kernel is locked down: only signed drivers load, NVIDIA’s included',
       'Encrypted disk with a recovery key made when you install',
       'The TPM chip opens the disk for you: automatically (recommended) or after a short PIN. Asima Rescue and other systems can’t use it',
       'Admin tasks ask for your password, or your fingerprint or face if you set them up',
-      `${names.shield}, the firewall: Public, Home or Developer, plus a VPN kill-switch`,
+      `${names.shield}, the firewall: a zone for each network (Public, Home, Developer, or Not secure, which stops nothing), plus a VPN kill-switch`,
     ],
     shot: 'maintenance-security-pin', alt: `${names.maintenance}: unlocking the disk with the TPM chip and a PIN`,
   },
@@ -78,7 +78,7 @@ const sections = [
     points: [
       'A gaming CPU scheduler (sched-ext LAVD) from the first start',
       'NTSYNC for Windows games, and GameMode',
-      'Controllers of every kind: XInput and DirectInput, wired, Bluetooth and wireless receivers',
+      'Controllers of every kind: XInput and DirectInput, wired, Bluetooth, wireless receivers and the Xbox Wireless Adapter',
       'A handheld’s power limit, refresh rate, frame limit, FSR, fan, back buttons and gyro',
       'Game mode with Steam in gamescope, as on SteamOS',
       'NVIDIA’s driver, signed for Secure Boot; AMD and Intel through Mesa',
@@ -106,7 +106,7 @@ const sections = [
     points: [
       'Power modes and battery care (charge limits), on laptops that support them',
       'Fingerprint and face sign-in, with a blink check for ordinary webcams',
-      'Display and keyboard light',
+      'The brightness of every screen, external monitors included, and the keyboard light',
       'Laptops with two graphics cards, and a second card for virtual machines',
       'Runs in virtual machines too: QEMU/KVM, VirtualBox, VMware and Hyper-V',
     ],
