@@ -59,7 +59,8 @@ feed key never goes into a repository; its public half is built into Asima Hub.
 
 1. Cloudflare dashboard → Workers & Pages → Create → Pages → connect the repository
    (`asimaos/asimaos-website`).
-2. Build command `npm run build`, output folder `dist`, environment variable `NODE_VERSION=24`.
+2. Build command `npm run build`, output folder `dist`. Node.js 24 comes from `.node-version`, as
+   in `scripts/run.sh`.
 3. Each push to `main` publishes the site; other branches get preview addresses, which search
    engines are told not to index.
 
