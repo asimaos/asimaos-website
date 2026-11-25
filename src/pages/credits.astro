@@ -1,0 +1,17 @@
+---
+// The credits of Asima OS, Asima Hub and this website, from each repository's CREDITS.md (their
+// one home): scripts/import-credits.py puts them together in src/credits/credits.md.
+import Article from '../layouts/Article.astro';
+import { Content, getHeadings } from '../credits/credits.md';
+import { site, names, links } from '../../site.config.mjs';
+---
+<Article
+  title="Credits"
+  description={`The projects and people ${site.name}, ${names.hub} and this website are built on.`}
+  eyebrow={site.name}
+  back={['About', '/about/']}
+  headings={getHeadings()}
+  edit={`${links.code}/blob/main/CREDITS.md`}
+>
+  <Content />
+</Article>

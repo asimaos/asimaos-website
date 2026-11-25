@@ -9,8 +9,9 @@ third-party scripts.
 | What | Where |
 | --- | --- |
 | **Every name, address and release fact** | `site.config.mjs`: the only place to change them |
-| Pages | `src/pages/` (start page, features, apps, download, about, community, security, privacy, search, 404) |
+| Pages | `src/pages/` (start page, features, apps, download, about, credits, community, security, privacy, search, 404) |
 | Guides | `src/content/guides/`, **imported** from the OS's `docs/guides` (their one home): `scripts/import-guides.py` |
+| Credits | `src/credits/credits.md`, **imported** from the `CREDITS.md` of the OS, of Asima Hub and of this website (each its own list's home): `scripts/import-credits.py` |
 | News | `src/content/news/` (Markdown; the RSS feed and Asima Hub's news are made from it) |
 | Asima Hub's feed | `public/feed/feed.json` and its signature, made by `scripts/make-feed` from the news and `feed/` (releases, app groups, links) |
 | App screenshots | `src/assets/screens/`, **imported** from the renders of the OS and of Asima Hub: `scripts/import-screenshots.sh` |
@@ -42,6 +43,7 @@ given):
 ```bash
 scripts/import-guides.py [OS]         # docs/guides → src/content/guides
 scripts/import-screenshots.sh [OS [HUB]]   # asimaos/apps/screenshots, asimaos-hub/screenshots → src/assets/screens
+scripts/import-credits.py [OS [HUB]]       # the three CREDITS.md → src/credits/credits.md
 ```
 
 ## Asima Hub's feed
