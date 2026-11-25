@@ -12,7 +12,7 @@ Sources:
                             feed's news, each linking to its page on the website
     feed/releases.json      the published versions: version, channel, date, notes, and the update
                             file and the ISO, each { url (https), size, sha256 }
-    feed/groups.json        the app groups Asima Hub offers on Asima OS
+    feed/groups.json        the app groups Asima App Center offers on Asima OS (D56)
     feed/settings.json      the links (guides, website) and the address for problem reports
 
 The feed key (FEED_KEY, default ../asimaos/build/keys/feed: feed.key and feed.pub, the same format as the

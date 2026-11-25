@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "gaming",
+    "title": "Gaming",
+    "summary": "Steam, other game stores and the tools around them",
+    "apps": [
+      {
+        "kind": "flatpak",
+        "id": "com.valvesoftware.Steam",
+        "name": "Steam"
+      },
+      {
+        "kind": "flatpak",
+        "id": "com.heroicgameslauncher.hgl",
+        "name": "Heroic Games Launcher"
+      },
+      {
+        "kind": "flatpak",
+        "id": "net.lutris.Lutris",
+        "name": "Lutris"
+      },
+      {
+        "kind": "flatpak",
+        "id": "net.davidotek.pupgui2",
+        "name": "ProtonUp-Qt"
+      },
+      {
+        "kind": "flatpak",
+        "id": "com.discordapp.Discord",
+        "name": "Discord"
+      }
+    ]
+  },
+  {
+    "id": "office",
+    "title": "Office",
+    "summary": "Documents, spreadsheets, mail and notes",
+    "apps": [
+      {
+        "kind": "flatpak",
+        "id": "org.libreoffice.LibreOffice",
+        "name": "LibreOffice"
+      },
+      {
+        "kind": "flatpak",
+        "id": "org.mozilla.Thunderbird",
+        "name": "Thunderbird"
+      },
+      {
+        "kind": "flatpak",
+        "id": "com.github.xournalpp.xournalpp",
+        "name": "Xournal++"
+      },
+      {
+        "kind": "flatpak",
+        "id": "org.kde.calligra",
+        "name": "Calligra"
+      }
+    ]
+  },
+  {
+    "id": "system",
+    "title": "System tools",
+    "summary": "App permissions, Flatpak data and what the computer is doing",
+    "apps": [
+      {
+        "kind": "flatpak",
+        "id": "com.github.tchx84.Flatseal",
+        "name": "Flatseal"
+      },
+      {
+        "kind": "flatpak",
+        "id": "io.github.flattool.Warehouse",
+        "name": "Warehouse"
+      },
+      {
+        "kind": "flatpak",
+        "id": "io.missioncenter.MissionCenter",
+        "name": "Mission Center"
+      },
+      {
+        "kind": "flatpak",
+        "id": "io.github.jonmagon.kdiskmark",
+        "name": "KDiskMark"
+      }
+    ]
+  },
+  {
+    "id": "windows",
+    "title": "Windows apps and games",
+    "summary": "Run Windows programs and games with Wine and Proton",
+    "apps": [
+      {
+        "kind": "flatpak",
+        "id": "com.usebottles.bottles",
+        "name": "Bottles"
+      },
+      {
+        "kind": "flatpak",
+        "id": "net.lutris.Lutris",
+        "name": "Lutris"
+      },
+      {
+        "kind": "flatpak",
+        "id": "com.github.Matoking.protontricks",
+        "name": "Protontricks"
+      }
+    ]
+  }
+]
