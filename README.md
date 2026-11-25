@@ -20,7 +20,7 @@ third-party scripts.
 | Preview picture and PNG icons | `public/og.png`, `public/*.png`, made by `scripts/make-images.mjs` |
 
 In Markdown, write names as tokens: `%os%` (Asima OS), `%oslinux%` (Asima OS Linux), `%updater%`,
-`%maintenance%`, `%manager%`, `%gaming%`, `%dev%`, `%hub%`, `%rescue%`. They are filled in from
+`%maintenance%`, `%manager%`, `%gaming%`, `%dev%`, `%appcenter%`, `%hub%`, `%rescue%`, `%shield%`. They are filled in from
 `site.config.mjs` when the site is built.
 
 ## Building
