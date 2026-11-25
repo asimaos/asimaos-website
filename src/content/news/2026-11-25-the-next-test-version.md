@@ -2,11 +2,11 @@
 title: "What the next test version adds"
 description: "%appcenter%, game mode in gamescope, controllers of every kind, a repair with screens, and updates that skip versions."
 date: 2026-11-25
-draft: true
 ---
 
 Everything planned for %os% before its first release is now in the next test version, apart from
-what would cost money. It is being built and tested in virtual machines now, then on real PCs.
+what would cost money. It is built, has passed every test in virtual machines, and is being tested
+on real PCs next.
 
 ## %appcenter%
 

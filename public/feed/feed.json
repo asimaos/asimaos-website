@@ -3,6 +3,12 @@
  "releases": [],
  "news": [
   {
+   "date": "2026-11-25",
+   "title": "What the next test version adds",
+   "text": "Asima App Center, game mode in gamescope, controllers of every kind, a repair with screens, and updates that skip versions.",
+   "link": "https://asimaos.pages.dev/news/2026-11-25-the-next-test-version/"
+  },
+  {
    "date": "2026-11-24",
    "title": "Asima OS: where it stands",
    "text": "What Asima OS is, what is being tested now, and what comes before the first public release.",

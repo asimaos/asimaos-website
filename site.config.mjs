@@ -50,10 +50,10 @@ export const links = {
   code,
   issues: `${code}/issues`,
   newIssue: `${code}/issues/new`,
-  // GitHub Discussions are not switched on yet; the site shows them once this is set.
-  discussions: null,
+  discussions: `${code}/discussions`,
   securityPolicy: `${code}/blob/main/SECURITY.md`,
   contributing: `${code}/blob/main/CONTRIBUTING.md`,
+  codeOfConduct: `${code}/blob/main/CODE_OF_CONDUCT.md`,
   changelog: `${code}/blob/main/CHANGELOG.md`,
   status: `${code}/blob/main/docs/status.md`,
   architecture: `${code}/blob/main/docs/architecture.md`,
