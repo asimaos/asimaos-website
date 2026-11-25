@@ -35,7 +35,7 @@ with any of them.
   icons, which the Asima OS apps use too.
 - [Qt](https://www.qt.io/): the toolkit of KDE and of every Asima OS app.
 - [PipeWire](https://pipewire.org/) with WirePlumber, [NetworkManager](https://networkmanager.dev/),
-  [BlueZ](https://www.bluez.org/) and [CUPS](https://openprinting.github.io/cups/): sound, networks,
+  [BlueZ](https://github.com/bluez/bluez) and [CUPS](https://openprinting.github.io/cups/): sound, networks,
   Bluetooth and printing.
 - [Mesa](https://mesa3d.org/) and NVIDIA's
   [open kernel modules](https://github.com/NVIDIA/open-gpu-kernel-modules): the graphics drivers.
