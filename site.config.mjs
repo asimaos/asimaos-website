@@ -23,7 +23,7 @@ export const site = {
   analytics: false,
 };
 
-// Names as people see them. The apps keep their current names until the rename (decided later).
+// Names as people see them.
 export const names = {
   os,
   oslinux: osLinux,
@@ -32,6 +32,7 @@ export const names = {
   manager: 'Asima Manager',
   gaming: 'Asima Gaming',
   dev: 'Asima Dev',
+  appcenter: 'Asima App Center',
   hub: 'Asima Hub',
   rescue: 'Asima Rescue',
   installer: 'the installer',

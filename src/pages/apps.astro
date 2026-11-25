@@ -20,20 +20,26 @@ const apps = [
   {
     id: 'manager', icon: '/apps/manager.svg', name: names.manager,
     job: 'This computer’s settings, in one place.',
-    points: ['Power modes and battery care', 'Fingerprint and face sign-in, with a blink check for webcams', 'Display, keyboard light and the hardware it found', `${names.shield}: the firewall, and a VPN kill-switch`],
+    points: ['Power modes and battery care', 'Fingerprint and face sign-in, with a blink check for webcams', 'The brightness of every screen, external monitors too, and the keyboard light', `${names.shield}: the firewall, with a zone for each network and a VPN kill-switch`],
     shots: [['manager-home', 'Home, on a handheld'], ['manager-power', 'Power and battery']],
   },
   {
     id: 'gaming', icon: '/apps/gaming.svg', name: names.gaming,
     job: 'Everything for games, without hunting through settings.',
-    points: ['Power mode and the CPU scheduler for games', 'Controllers: test them, set the rumble, use one as a mouse', 'A handheld’s power limit, refresh rate, frame limit and fan', 'RGB lighting, and a full-screen game mode with Steam'],
+    points: ['Power mode and the CPU scheduler for games', 'Controllers of every kind, XInput and DirectInput, wired, over Bluetooth or a wireless receiver: test them, set the rumble, use one as a mouse', 'A handheld’s power limit, refresh rate, frame limit, fan, back buttons and gyro', 'RGB lighting, and game mode with Steam in gamescope, as on SteamOS'],
     shots: [['gaming-gaming', 'Gaming'], ['gaming-controllers', 'Controllers']],
   },
   {
     id: 'dev', icon: '/apps/dev.svg', name: names.dev,
-    job: 'Containers, virtual machines, Nix and Android apps.',
-    points: ['Distrobox and Podman containers, created and opened from one list', 'Virtual machines, even with a graphics card of their own', 'Nix programs, installed for you without touching the system', 'Android apps through Waydroid'],
-    shots: [['dev-containers', 'Containers'], ['dev-nix', 'Nix programs']],
+    job: 'Containers and virtual machines.',
+    points: ['Distrobox and Podman containers, created and opened from one list', 'Virtual machines, even with a graphics card of their own', 'How much room each takes, with a limit so none can fill the disk'],
+    shots: [['dev-containers', 'Containers'], ['dev-machines', 'Virtual machines']],
+  },
+  {
+    id: 'appcenter', icon: '/apps/appcenter.svg', name: names.appcenter,
+    job: 'Every kind of app for Linux, in one place.',
+    points: ['Flatpak, Snap and AppImage apps, Android apps and Windows programs', 'Developer tools from Nix, Homebrew, Python, Node.js, Rust, Go and Conda', 'Opens app files and says what they are before anything is installed', 'Updates of every kind, installed with one click'],
+    shots: [['appcenter-store', 'Apps, by purpose and by kind'], ['appcenter-installed', 'Everything installed']],
   },
   {
     id: 'rescue', icon: '/mark.svg', name: names.rescue,
@@ -49,13 +55,13 @@ const apps = [
   },
   {
     id: 'hub', icon: '/apps/hub.svg', name: names.hub,
-    job: 'The one app that goes online, and it’s optional.',
+    job: 'News, downloads and updates online, and it’s optional.',
     points: ['News, and a check of what ' + site.name + ' will do on your PC', 'Downloads the system and writes the USB stick: on Linux now, on Windows later', 'On ' + site.name + ', downloads updates and hands them to ' + names.updater, 'Never part of the system: install it only if you want it'],
     shots: [['hub-get', 'Getting ' + site.name], ['hub-updates', 'Updates']],
   },
 ];
 ---
-<Base title="Apps" description={`The ${site.name} apps: ${names.updater}, ${names.maintenance}, ${names.manager}, ${names.gaming}, ${names.dev}, ${names.rescue}, the installer and ${names.hub}.`}>
+<Base title="Apps" description={`The ${site.name} apps: ${names.updater}, ${names.maintenance}, ${names.manager}, ${names.gaming}, ${names.dev}, ${names.appcenter}, ${names.rescue}, the installer and ${names.hub}.`}>
   <section class="container page-head">
     <p class="eyebrow">Apps</p>
     <h1>One job per app, done well</h1>

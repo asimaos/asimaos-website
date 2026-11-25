@@ -15,7 +15,8 @@ SHOTS=(
     asimaos-maintenance-reset asimaos-maintenance-health
     asimaos-manager-home asimaos-manager-biometrics asimaos-manager-power asimaos-manager-shield
     asimaos-gaming-gaming asimaos-gaming-controllers asimaos-gaming-handheld
-    asimaos-dev-containers asimaos-dev-machines asimaos-dev-android asimaos-dev-nix
+    asimaos-dev-containers asimaos-dev-machines
+    asimaos-appcenter-store asimaos-appcenter-installed
     asimaos-rescue-home asimaos-rescue-unlock
     asimaos-installer-welcome asimaos-installer-disk asimaos-installer-encryption-filled
     asimaos-hub-get asimaos-hub-updates asimaos-hub-news

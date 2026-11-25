@@ -27,9 +27,9 @@ const features = [
   { icon: 'back', title: 'Two versions to choose from', text: 'The start menu keeps the current version and the one before it. Going back takes one click and never touches your files.' },
   { icon: 'rescue', title: `${names.rescue}`, text: 'A repair system in the start menu that runs entirely in memory: unlock the disk, restore files, reinstall, all without a USB stick.' },
   { icon: 'data', title: 'Your files stay yours', text: 'Snapshots of your files and settings, encrypted backups that test their own restore, and a guard that asks before any tool wipes the disk.' },
-  { icon: 'box', title: 'Every kind of app', text: 'Flathub in Discover, Snap, AppImage, Android apps, Nix, and any Linux distribution’s packages in a container.' },
-  { icon: 'gamepad', title: 'Ready for games', text: 'Steam from Flathub, a gaming CPU scheduler, NTSYNC, controllers and handhelds, and a full-screen game mode.' },
-  { icon: 'code', title: 'Ready for developers', text: 'Podman and Distrobox, virtual machines with a graphics card of their own, Nix, and the everyday tools already there.' },
+  { icon: 'box', title: 'Every kind of app', text: 'One App Center for Flatpak, Snap, AppImage, Android and Windows apps, and developer tools from Nix to Conda; Discover is there too.' },
+  { icon: 'gamepad', title: 'Ready for games', text: 'Steam from Flathub, a gaming CPU scheduler, NTSYNC, controllers of every kind, handhelds, and game mode in gamescope.' },
+  { icon: 'code', title: 'Ready for developers', text: 'Podman and Distrobox, virtual machines with a graphics card of their own, disk limits, and the everyday tools already there.' },
   { icon: 'monitor', title: 'Plain KDE Plasma', text: `KDE Plasma ${release.base.plasma} on Wayland with its standard look and apps. Nothing re-skinned, nothing to unlearn.` },
 ];
 
@@ -41,7 +41,9 @@ const apps = [
   { id: 'gaming', icon: '/apps/gaming.svg', name: names.gaming, shot: 'gaming-gaming',
     text: 'Power mode and CPU scheduler for games, the overlay, controllers, a handheld’s own controls and RGB lighting.' },
   { id: 'dev', icon: '/apps/dev.svg', name: names.dev, shot: 'dev-containers',
-    text: 'Containers, virtual machines, Nix programs and Android apps, set up from one window.' },
+    text: 'Containers and virtual machines, with a graphics card of their own if you like, and a limit on the room they take.' },
+  { id: 'appcenter', icon: '/apps/appcenter.svg', name: names.appcenter, shot: 'appcenter-store',
+    text: 'Every kind of app for Linux in one place, by purpose: Flatpak, Snap, AppImage, Android, Windows and developer tools.' },
 ];
 
 const facts = [

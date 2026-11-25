@@ -61,15 +61,15 @@ const sections = [
   {
     id: 'apps', icon: 'box', eyebrow: 'Apps',
     title: 'Every kind of app, without risking the system',
-    lead: 'Apps are added next to the system, never into it. Pick them in Discover, or use whatever you’re used to.',
+    lead: 'Apps are added next to the system, never into it: in ' + names.appcenter + ', which has every kind, or in Discover.',
     points: [
-      'Flathub, set up in Discover: browsers, office, Steam, creative tools',
-      'Snap and AppImage: double-click and go',
-      'Android apps through Waydroid, set up in ' + names.dev,
-      'Nix for command-line tools, and Distrobox for any distribution’s packages',
+      'Flathub, the Snap Store and AppImages side by side, by purpose',
+      'Android apps from F-Droid, and Windows programs in Bottles',
+      'Developer tools from Nix, Homebrew, PyPI, npm, crates.io, Go and Conda, in your home folder',
+      'App files open in ' + names.appcenter + ', which says what they are first',
       'KDE’s standard apps included: Dolphin, Konsole, Kate, Okular, Gwenview, Spectacle and more',
     ],
-    shot: 'dev-android', alt: `${names.dev}: Android apps`,
+    shot: 'appcenter-store', alt: `${names.appcenter}`,
   },
   {
     id: 'gaming', icon: 'gamepad', eyebrow: 'Gaming',
@@ -78,8 +78,9 @@ const sections = [
     points: [
       'A gaming CPU scheduler (sched-ext LAVD) from the first start',
       'NTSYNC for Windows games, and GameMode',
-      'Controllers, and a handheld’s power limit, refresh rate, frame limit, FSR and fan',
-      'A full-screen game mode with Steam, for handhelds',
+      'Controllers of every kind: XInput and DirectInput, wired, Bluetooth and wireless receivers',
+      'A handheld’s power limit, refresh rate, frame limit, FSR, fan, back buttons and gyro',
+      'Game mode with Steam in gamescope, as on SteamOS',
       'NVIDIA’s driver, signed for Secure Boot; AMD and Intel through Mesa',
       'RGB lighting that the kernel can drive',
     ],
@@ -92,7 +93,7 @@ const sections = [
     points: [
       'Podman (with the Docker command) and Distrobox',
       'Virtual machines with QEMU and libvirt, even with a graphics card of their own',
-      'Nix programs, without touching the system',
+      'Disk use and limits for containers and virtual machines',
       'git, ssh, gdb, strace, perf, Python and more already there',
       `The ${names.command} command does the apps’ jobs in a terminal`,
     ],
